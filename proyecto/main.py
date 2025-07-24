@@ -2,29 +2,32 @@ from dosSolutoria_prueba.bd.create_table import creacion_tabla
 from dosSolutoria_prueba.api.api import dataUFAPI
 from dosSolutoria_prueba.bd.datalocal import UFDataLocal
 from dosSolutoria_prueba.bd.commands import UF_CRUD
-from dosSolutoria_prueba.views.app import show_uf_chart # Importa la nueva función
-import tkinter as tk  # Necesario para la interfaz gráfica
+from dosSolutoria_prueba.views.app import show_uf_chart
+
+import tkinter as tk  
 
 def main():
+    print("########################\n")
     print("Iniciando aplicación UF")
+    print("\n########################")
     
     try:
-        # 1. Configuración inicial
+        # config inicial
         print("Creando estructura de BD...")
         creacion_tabla()
         
-        # 2. Obtener datos de la API
+        # obtener datos de la API
         print("Obteniendo datos de la API...")
         api = dataUFAPI()
         data_handler = UFDataLocal()
         data_handler.initialize()
         
-        # 3. Procesar y guardar datos UF
+        # procesa y guarda datos
         print("Procesando datos UF...")
         resultado = data_handler.save_uf_data() 
         print(resultado)
         
-        # 4. Mostrar la interfaz gráfica
+        # inicializa la interfaz gráfica
         print("Iniciando interfaz gráfica...")
         root = tk.Tk()
         show_uf_chart()  

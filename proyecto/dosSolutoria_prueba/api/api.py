@@ -7,12 +7,8 @@ class dataUFAPI:
     USERNAME = "clasica05@gmail.com"
     FLAG_JSON = True
     token = ""
-
-    def initialize():
-        url_base = "https://postulaciones.solutoria.cl"
-        token = ""
-
     url_base = "https://postulaciones.solutoria.cl"
+    token = ""
 
     @staticmethod
     def getToken():

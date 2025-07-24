@@ -9,10 +9,7 @@ from dosSolutoria_prueba.bd.datalocal import UFDataLocal
 
 
 class UF_CRUD:
-
-    def __init__(self):
-        pass
-
+    
     def create_datos(self, uf_data):
         conn = conexionBD.get_bd_connection()
         cursor = conn.cursor()

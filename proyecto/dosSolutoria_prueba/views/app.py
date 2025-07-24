@@ -1,3 +1,5 @@
+from dosSolutoria_prueba.bd.conexion import conexionBD
+
 import sqlite3
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -5,41 +7,42 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
 import pandas as pd
-from dosSolutoria_prueba.bd.conexion import conexionBD
+
 
 class UFChartApp:
+
     def __init__(self, root):
         self.root = root
         self.root.title("Visualizador de Datos UF")
         self.root.geometry("900x600")
         
-        # Configurar estilo
+
         self.style = ttk.Style()
         self.style.configure('TFrame', background='#f0f0f0')
         self.style.configure('TLabel', background='#f0f0f0', font=('Arial', 10))
         self.style.configure('TButton', font=('Arial', 10), padding=5)
         self.style.configure('Header.TLabel', font=('Arial', 12, 'bold'))
         
-        # Crear widgets
+        
         self.create_widgets()
         
-        # Cargar datos iniciales
         self.load_data()
         
     def create_widgets(self):
-        # Frame principal
+
+        # Fr principal
         main_frame = ttk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Frame de controles
+        # Fr de controles
         control_frame = ttk.Frame(main_frame)
         control_frame.pack(fill=tk.X, pady=(0, 10))
         
-        # Título
+        # titulo
         title_label = ttk.Label(control_frame, text="Datos Históricos de UF", style='Header.TLabel')
         title_label.grid(row=0, column=0, columnspan=4, pady=5)
         
-        # Etiquetas y controles de fecha
+        # labels y controles de fecha
         ttk.Label(control_frame, text="Fecha Inicio:").grid(row=1, column=0, padx=5, sticky=tk.E)
         self.start_date_entry = ttk.Entry(control_frame)
         self.start_date_entry.grid(row=1, column=1, padx=5)
@@ -48,30 +51,30 @@ class UFChartApp:
         self.end_date_entry = ttk.Entry(control_frame)
         self.end_date_entry.grid(row=1, column=3, padx=5)
         
-        # Botón de filtrado
+        # bttn filtrado
         filter_button = ttk.Button(control_frame, text="Filtrar", command=self.filter_data)
         filter_button.grid(row=1, column=4, padx=10)
         
-        # Botón para mostrar todos los datos
+        # bttn mostrar datos
         all_data_button = ttk.Button(control_frame, text="Mostrar Todo", command=self.load_data)
         all_data_button.grid(row=1, column=5, padx=5)
         
-        # Frame del gráfico
+        #fr de gráfico
         chart_frame = ttk.Frame(main_frame)
         chart_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Crear figura de matplotlib
+        # creación de figura de matplotlib
         self.fig, self.ax = plt.subplots(figsize=(10, 6), facecolor='#f5f5f5')
         self.ax.set_title('Evolución de la UF', pad=20, fontsize=14)
         self.ax.set_xlabel('Fecha', fontsize=10)
         self.ax.set_ylabel('Valor (CLP)', fontsize=10)
         self.ax.grid(True, linestyle='--', alpha=0.6)
         
-        # Añadir figura a tkinter
+        # añade figura a tkinter
         self.canvas = FigureCanvasTkAgg(self.fig, master=chart_frame)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
-        # Frame de información
+        # Fr de configuración
         info_frame = ttk.Frame(main_frame)
         info_frame.pack(fill=tk.X, pady=(10, 0))
         
@@ -79,14 +82,15 @@ class UFChartApp:
         self.info_label.pack()
     
     def load_data(self):
-        """Cargar todos los datos sin filtrar"""
+        # cargar todos los datos sin filtros
         conn = conexionBD.get_bd_connection()
         query = "SELECT fechaIndicador, valorIndicador FROM uf_historica WHERE codigoIndicador='UF' ORDER BY fechaIndicador"
         self.df = pd.read_sql(query, conn, parse_dates=['fechaIndicador'])
         conn.close()
         
-        # Actualizar campos de fecha
+        # actualizar campos de fecha
         if not self.df.empty:
+
             min_date = self.df['fechaIndicador'].min().strftime('%Y-%m-%d')
             max_date = self.df['fechaIndicador'].max().strftime('%Y-%m-%d')
             self.start_date_entry.delete(0, tk.END)
@@ -97,12 +101,14 @@ class UFChartApp:
         self.update_chart()
     
     def filter_data(self):
-        """Filtrar datos por rango de fechas"""
+
+        # filtrar por el rango de fechas
         start_date = self.start_date_entry.get()
         end_date = self.end_date_entry.get()
         
         try:
-            # Validar fechas
+            # validación de fechas
+
             start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
             
@@ -126,7 +132,8 @@ class UFChartApp:
             self.info_label.config(text=f"Error en formato de fecha: {e}. Use YYYY-MM-DD")
     
     def update_chart(self):
-        """Actualizar el gráfico con los datos actuales"""
+
+        # actualizar el gráfico con los datos actuales
         self.ax.clear()
         
         if self.df.empty:
@@ -134,21 +141,25 @@ class UFChartApp:
                         ha='center', va='center', fontsize=12)
             self.info_label.config(text="No se encontraron datos para el rango seleccionado")
         else:
-            # Graficar datos con colores
+
+            # grafica datos con colores
             self.ax.plot(self.df['fechaIndicador'], self.df['valorIndicador'], 
                         marker='o', markersize=4, linestyle='-', 
                         color='#2c7bb6', linewidth=2, alpha=0.8)
             
-            # Formatear ejes
+
+            # formateo de ejes
             self.ax.set_title('Evolución de la UF', pad=20, fontsize=14)
             self.ax.set_xlabel('Fecha', fontsize=10)
             self.ax.set_ylabel('Valor (CLP)', fontsize=10)
             self.ax.grid(True, linestyle='--', alpha=0.6)
             
-            # Rotar etiquetas de fechas para mejor legibilidad
+
+            # rota labels de fechas para mejor legibilidad
             plt.setp(self.ax.get_xticklabels(), rotation=45, ha='right')
             
-            # Actualizar información
+            
+            # actualiza información
             min_val = self.df['valorIndicador'].min()
             max_val = self.df['valorIndicador'].max()
             info_text = (f"Datos mostrados: {len(self.df)} registros | "
@@ -163,5 +174,3 @@ def show_uf_chart():
     app = UFChartApp(root)
     root.mainloop()
 
-"""if __name__ == "__main__":
-    show_uf_chart()"""
