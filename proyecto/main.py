@@ -18,9 +18,7 @@ def main():
         
         # obtener datos de la API
         print("Obteniendo datos de la API...")
-        api = dataUFAPI()
         data_handler = UFDataLocal()
-        data_handler.initialize()
         
         # procesa y guarda datos
         print("Procesando datos UF...")

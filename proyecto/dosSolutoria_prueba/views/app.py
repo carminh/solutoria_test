@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from datetime import datetime
 import pandas as pd
 
@@ -105,6 +106,7 @@ class UFChartApp:
         # filtrar por el rango de fechas
         start_date = self.start_date_entry.get()
         end_date = self.end_date_entry.get()
+
         
         try:
             # validación de fechas
@@ -113,7 +115,8 @@ class UFChartApp:
             end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
             
             if start_date > end_date:
-                raise ValueError("La fecha de inicio no puede ser mayor a la fecha fin")
+                messagebox.showerror("Error", "La fecha de inicio no puede ser mayor a la fecha fin")
+                return
             
             conn = conexionBD.get_bd_connection()
             query = """
@@ -128,6 +131,8 @@ class UFChartApp:
             
             self.update_chart()
             
+        #except ValueError as e:
+
         except ValueError as e:
             self.info_label.config(text=f"Error en formato de fecha: {e}. Use YYYY-MM-DD")
     

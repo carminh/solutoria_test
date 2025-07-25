@@ -4,7 +4,7 @@ import sqlite3
 
 class UFDataLocal:
 
-    def initialize(self):
+    def __init__(self):
         self.api = api.dataUFAPI()
         self.data = []
 
