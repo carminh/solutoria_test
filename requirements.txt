@@ -1,0 +1,5 @@
+requests==2.31.0
+pandas==2.0.3
+matplotlib==3.7.2
+tk==0.1.0
+sqlite3==2.6.0
