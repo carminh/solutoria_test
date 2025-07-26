@@ -1,5 +1,5 @@
-from dosSolutoria_prueba.bd.conexion import conexionBD
-from dosSolutoria_prueba.bd.commands import UF_CRUD
+from solutoria_test.src.bd.conexion import conexionBD
+from solutoria_test.src.bd.commands import UF_CRUD
 
 
 import sqlite3

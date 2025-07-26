@@ -1,5 +1,5 @@
-import dosSolutoria_prueba.api.api as api
-from dosSolutoria_prueba.bd.conexion import conexionBD
+import solutoria_test.src.api.api as api
+from solutoria_test.src.bd.conexion import conexionBD
 import sqlite3
 
 class UFDataLocal:

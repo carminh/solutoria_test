@@ -3,8 +3,8 @@
 
 import sqlite3
 import pandas as pd
-from dosSolutoria_prueba.bd.conexion import conexionBD
-from dosSolutoria_prueba.bd.datalocal import UFDataLocal
+from solutoria_test.src.bd.conexion import conexionBD
+from solutoria_test.src.bd.datalocal import UFDataLocal
 
 
 
