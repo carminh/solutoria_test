@@ -1,5 +1,6 @@
 from solutoria_test.src.bd.conexion import conexionBD
 from solutoria_test.src.bd.commands import UF_CRUD
+from solutoria_test.src.bd.create_table import creacion_tabla
 
 
 import sqlite3
@@ -159,7 +160,7 @@ class UFChartApp:
                 messagebox.showerror("Error", "La fecha de inicio no puede ser mayor a la fecha fin")
                 return
 
-            conn()
+            conn = conexionBD.get_bd_connection()
             query = """
                 SELECT fechaIndicador, valorIndicador 
                 FROM uf_historica 
