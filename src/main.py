@@ -1,8 +1,8 @@
-from solutoria_test.src.bd.create_table import creacion_tabla
-from solutoria_test.src.api.api import dataUFAPI
-from solutoria_test.src.bd.datalocal import UFDataLocal
-from solutoria_test.src.bd.commands import UF_CRUD
-from solutoria_test.src.views.app import show_uf_chart
+from bd.create_table import creacion_tabla
+from api.api import dataUFAPI
+from bd.datalocal import UFDataLocal
+from bd.commands import UF_CRUD
+from views.app import show_uf_chart
 
 import tkinter as tk  
 

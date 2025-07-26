@@ -1,6 +1,6 @@
 
 import sqlite3
-from solutoria_test.src.bd.conexion import conexionBD
+from bd.conexion import conexionBD
 
 def creacion_tabla():
     conn = conexionBD.get_bd_connection()

@@ -1,6 +1,6 @@
-from solutoria_test.src.bd.conexion import conexionBD
-from solutoria_test.src.bd.commands import UF_CRUD
-from solutoria_test.src.bd.create_table import creacion_tabla
+from bd.conexion import conexionBD
+from bd.commands import UF_CRUD
+from bd.create_table import creacion_tabla
 
 
 import sqlite3

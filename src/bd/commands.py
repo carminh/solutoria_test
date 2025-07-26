@@ -3,8 +3,8 @@
 
 import sqlite3
 import pandas as pd
-from solutoria_test.src.bd.conexion import conexionBD
-from solutoria_test.src.bd.datalocal import UFDataLocal
+from bd.conexion import conexionBD
+from bd.datalocal import UFDataLocal
 
 
 
@@ -53,10 +53,23 @@ class UF_CRUD:
         if limite:
             query += " LIMIT ?"
             params.append(limite)
-            
-        df = pd.read_sql(query, conn, params)
-        conn.close()
-        return df
+
+
+        try:
+            df = pd.read_sql(query, conn, params=params)
+
+            if df.empty:
+                print("⚠️ La consulta no devolvió datos.")
+            else:
+                print("✅ Datos cargados correctamente:", len(df), "filas")
+            return df
+
+        except Exception as e:
+            print("❌ Error al ejecutar la consulta:", e)
+            return pd.DataFrame()
+        finally:
+            conn.close()
+
 
 
 
