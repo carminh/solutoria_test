@@ -113,11 +113,23 @@ class UFChartApp:
 
             start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-            
+
+
+            # obtener la fecha máxima de la base de datos para manejo de errores
+            conn = conexionBD.get_bd_connection()
+            max_date_query = "SELECT MAX(fechaIndicador) as max_fecha FROM uf_historica WHERE codigoIndicador='UF'"
+            max_date_df = pd.read_sql(max_date_query, conn, parse_dates=['max_fecha'])
+            conn.close()
+            max_db_date = max_date_df['max_fecha'][0].date()
+
+            if end_date > max_db_date:
+                messagebox.showerror("Error", f"La fecha fin no puede ser mayor que la última fecha disponible en la bd ({max_db_date.strftime('%Y-%m-%d')})")
+                return
+
             if start_date > end_date:
                 messagebox.showerror("Error", "La fecha de inicio no puede ser mayor a la fecha fin")
                 return
-            
+
             conn = conexionBD.get_bd_connection()
             query = """
                 SELECT fechaIndicador, valorIndicador 
@@ -128,13 +140,12 @@ class UFChartApp:
             """
             self.df = pd.read_sql(query, conn, params=[start_date, end_date], parse_dates=['fechaIndicador'])
             conn.close()
-            
+
             self.update_chart()
-            
-        #except ValueError as e:
 
         except ValueError as e:
-            self.info_label.config(text=f"Error en formato de fecha: {e}. Use YYYY-MM-DD")
+            messagebox.showerror("Error de Formato", f"Error en formato de fecha: {e}. Use YYYY-MM-DD")
+        
     
     def update_chart(self):
 
