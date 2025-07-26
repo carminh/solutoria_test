@@ -24,7 +24,9 @@ Aplicación para consumir datos históricos de la UF desde una API, almacenarlos
    cd solutoria_test
 
 2. Instalar dependencias:
+   ```bash
    pip install -r requirements.txt
 
-3. Iniciar app:
+4. Iniciar app:
+   ```bash
    python src/main.py
